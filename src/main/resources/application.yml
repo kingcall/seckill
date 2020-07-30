@@ -8,3 +8,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 100
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  type-aliases-package: com.kingcall.seckill.mapper # 不知道这个到底是干什么的，发现可有可无

@@ -11,7 +11,11 @@ public interface UserPasswdMapper {
 
     UserPasswd selectByPrimaryKey(Integer id);
 
+    UserPasswd selectByUserId(Integer id);
+
     int updateByPrimaryKeySelective(UserPasswd record);
 
     int updateByPrimaryKey(UserPasswd record);
+
+
 }

@@ -1,5 +1,8 @@
 package com.kingcall.seckill.model;
 
+import lombok.Data;
+
+@Data
 public class User {
     private Integer id;
 
