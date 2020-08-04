@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kingcall.seckill.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.kingcall.seckill.model.User">
+  <resultMap id="BaseResultMap" type="com.kingcall.seckill.entity.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="gender" jdbcType="TINYINT" property="gender" />
@@ -34,7 +34,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kingcall.seckill.model.User">
+  <insert id="insert" parameterType="com.kingcall.seckill.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -45,7 +45,7 @@
       #{phone,jdbcType=VARCHAR}, #{registerMode,jdbcType=VARCHAR}, #{thirdPartyId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kingcall.seckill.model.User">
+  <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -91,7 +91,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.model.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.User">
     update user
     <set>
       <if test="name != null">
@@ -115,7 +115,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.model.User">
+  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.User">
     update user
     set name = #{name,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=TINYINT},

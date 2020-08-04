@@ -1,9 +1,7 @@
 package com.kingcall.seckill.service;
 
 import com.kingcall.seckill.common.error.BusinessException;
-import com.kingcall.seckill.service.model.UserModel;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import com.kingcall.seckill.model.UserModel;
 
 
 public interface UserService {

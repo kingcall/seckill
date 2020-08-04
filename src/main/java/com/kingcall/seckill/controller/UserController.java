@@ -2,22 +2,18 @@ package com.kingcall.seckill.controller;
 
 
 import com.kingcall.seckill.common.Constant;
-import com.kingcall.seckill.common.MD5Util;
 import com.kingcall.seckill.common.error.BusinessException;
 import com.kingcall.seckill.common.error.EmBusinessError;
 import com.kingcall.seckill.common.response.CommonReturnType;
 import com.kingcall.seckill.service.UserService;
-import com.kingcall.seckill.service.model.UserModel;
+import com.kingcall.seckill.model.UserModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Random;
 
 @Slf4j

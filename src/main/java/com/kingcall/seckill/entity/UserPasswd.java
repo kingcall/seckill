@@ -1,4 +1,4 @@
-package com.kingcall.seckill.model;
+package com.kingcall.seckill.entity;
 
 import lombok.Data;
 

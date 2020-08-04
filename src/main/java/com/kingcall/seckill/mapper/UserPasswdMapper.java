@@ -1,6 +1,6 @@
 package com.kingcall.seckill.mapper;
 
-import com.kingcall.seckill.model.UserPasswd;
+import com.kingcall.seckill.entity.UserPasswd;
 import org.springframework.stereotype.Repository;
 
 @Repository
