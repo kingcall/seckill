@@ -1,7 +1,9 @@
 package com.kingcall.seckill.mapper;
 
 import com.kingcall.seckill.model.UserPasswd;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserPasswdMapper {
     int deleteByPrimaryKey(Integer id);
 

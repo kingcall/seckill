@@ -13,6 +13,14 @@ public class BusinessException extends Exception implements CommonError {
         setErrorMsg(errorMessage);
     }
 
+    public BusinessException (CommonError error, String errorMessage){
+        super();
+        this.commonError = error;
+        setErrorMsg(errorMessage);
+    }
+
+
+
     @Override
     public int getErrorCode() {
         return this.commonError.getErrorCode();
