@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -38,7 +39,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemModel> listItmes() {
-        return null;
+        return itemMapper.listItem().stream().map(item -> {
+            ItemStock itemStock = stockMapper.selectByItemId(item.getId());
+            return convertItemModel(item, itemStock);
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -48,10 +52,21 @@ public class ItemServiceImpl implements ItemService {
             return null;
         }
         ItemStock stock = stockMapper.selectByItemId(id);
-        return null;
+        return convertItemModel(item, stock);
     }
 
-    private  ItemModel convertItemModel(Item item,ItemStock stock){
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer amount) {
+        int affectRow = stockMapper.decreaseStock(itemId, amount);
+        if (affectRow > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private ItemModel convertItemModel(Item item, ItemStock stock) {
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(item, itemModel);
         itemModel.setStock(stock.getStock());

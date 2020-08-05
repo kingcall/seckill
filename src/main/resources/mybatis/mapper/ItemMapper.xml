@@ -7,8 +7,9 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="sales" jdbcType="INTEGER" property="sales" />
-    <result column="imgurl" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
   </resultMap>
+  
   <sql id="Base_Column_List">
     id, title, price, description, sales, imgurl
   </sql>
@@ -18,10 +19,20 @@
     from item
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="listItem" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from item
+    order by
+    sales desc
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from item
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.kingcall.seckill.entity.Item">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -31,6 +42,7 @@
     values (#{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
       #{sales,jdbcType=INTEGER}, #{imgurl,jdbcType=VARCHAR})
   </insert>
+
   <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.Item">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
@@ -71,6 +83,7 @@
       </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.Item">
     update item
     <set>
@@ -92,6 +105,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.Item">
     update item
     set title = #{title,jdbcType=VARCHAR},
@@ -101,4 +115,5 @@
       imgurl = #{imgurl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

@@ -32,17 +32,14 @@ public class UserController {
         if (id == 3) {
             throw new NullPointerException();
         }
-
         if (user == null) {
             throw new BusinessException(EmBusinessError.USER_NOT_EXISTT);
         }
-
         return CommonReturnType.create(user);
     }
 
     /**
      * 获取opt 短信接口
-     *
      * @param telephone
      * @return
      */
@@ -66,7 +63,6 @@ public class UserController {
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     public CommonReturnType register(@Valid UserModel userModel,String optCode) throws BusinessException {
         // 验收手机号和optcode 是否对应
-
         String inSessionOptcode = (String) httpServlet.getSession().getAttribute(userModel.getPhone());
         if (!StringUtils.equals(optCode, inSessionOptcode)) {
             log.debug(optCode+"==========="+inSessionOptcode);
@@ -76,10 +72,8 @@ public class UserController {
             userService.register(userModel);
             return CommonReturnType.create("注册成功");
         }
-
         userService.register(userModel);
         return CommonReturnType.create("注册成功");
-
     }
 
 

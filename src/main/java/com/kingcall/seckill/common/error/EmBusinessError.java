@@ -1,15 +1,22 @@
 package com.kingcall.seckill.common.error;
 
 public enum EmBusinessError implements CommonError {
-    /**
-     * 1000开头的代表用户信息错误
-     */
-    USER_NOT_EXISTT(10001, "用户不存在"),
+    UNKONW_ERROR(10002,"未知错误"),
     /**
      * 参数不合法
      */
-    PARAMETER_VALIDATION_ERROR(00001, "参数不合法"),
-    UNKONW_ERROR(00002,"未知错误")
+    PARAMETER_VALIDATION_ERROR(10001, "参数不合法"),
+
+    /**
+     * 2000开头的代表用户信息错误
+     */
+    USER_NOT_EXISTT(20001, "用户不存在"),
+
+    /**
+     * 3000 开头代表交易错误
+     */
+    ITEM_NOT_EXIST_ERROR(30001,"商品不存在"),
+    ORDER_ERROR(30002,"交易错误")
     ;
 
 
