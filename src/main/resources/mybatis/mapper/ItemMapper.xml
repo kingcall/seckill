@@ -7,13 +7,13 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="sales" jdbcType="INTEGER" property="sales" />
-    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgUrl" />
   </resultMap>
   <sql id="Base_Column_List">
     id, title, price, description, sales, imgurl
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from item
     where id = #{id,jdbcType=INTEGER}
@@ -26,9 +26,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into item (title, price, description, 
+    insert into item (title, price, description,
       sales, imgurl)
-    values (#{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+    values (#{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
       #{sales,jdbcType=INTEGER}, #{imgurl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.Item">

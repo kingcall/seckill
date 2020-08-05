@@ -9,13 +9,16 @@ import com.kingcall.seckill.entity.User;
 import com.kingcall.seckill.entity.UserPasswd;
 import com.kingcall.seckill.service.UserService;
 import com.kingcall.seckill.model.UserModel;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void register(UserModel userModel) throws BusinessException {
         if (userModel == null) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
@@ -53,10 +57,7 @@ public class UserServiceImpl implements UserService {
 
         UserPasswd passwd = new UserPasswd();
         BeanUtils.copyProperties(userModel, passwd);
-
-        System.out.println(userModel.toString());
-        System.out.println(passwd.toString());
-
+        passwd.setUserId(user.getId());
         userPasswdMapper.insertSelective(passwd);
     }
 

@@ -1,7 +1,9 @@
 package com.kingcall.seckill.mapper;
 
 import com.kingcall.seckill.entity.Item;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ItemMapper {
     int deleteByPrimaryKey(Integer id);
 

@@ -1,7 +1,9 @@
 package com.kingcall.seckill.mapper;
 
 import com.kingcall.seckill.entity.ItemStock;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ItemStockMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,7 @@ public interface ItemStockMapper {
     int insertSelective(ItemStock record);
 
     ItemStock selectByPrimaryKey(Integer id);
+    ItemStock selectByItemId(Integer itemId);
 
     int updateByPrimaryKeySelective(ItemStock record);
 

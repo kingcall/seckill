@@ -17,7 +17,8 @@ import javax.validation.Valid;
 import java.util.Random;
 
 @Slf4j
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserController {
     Random random = new Random();
     @Autowired
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     /**
-     * @param telephone 用户注册时提供的手机号
+     * @param userModel 用户注册时提供的信息
      * @param optCode   发送到用户手机上的optCode
      * @return
      */
@@ -81,12 +82,6 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = "/register2",method = RequestMethod.POST)
-    public CommonReturnType register( @Valid UserModel userModel) throws BusinessException {
-        userService.register(userModel);
-        return CommonReturnType.create("注册成功");
-
-    }
 
 
     @RequestMapping("/login")
