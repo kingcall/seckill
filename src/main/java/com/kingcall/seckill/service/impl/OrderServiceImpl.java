@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
         System.out.println(orderModel);
         Order order = converOrder(orderModel);
         System.out.println(order);
-        orderMapper.insert(order);
+        orderMapper.insertSelective(order);
         return orderModel;
     }
 

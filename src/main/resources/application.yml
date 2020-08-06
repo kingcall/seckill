@@ -11,3 +11,5 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/**/*.xml
   type-aliases-package: com.kingcall.seckill.mapper # 不知道这个到底是干什么的，发现可有可无
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

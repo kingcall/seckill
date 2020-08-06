@@ -13,7 +13,7 @@
     id, user_id, item_id, item_price, amount, order_price
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from order
     where id = #{id,jdbcType=VARCHAR}
@@ -23,20 +23,19 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.kingcall.seckill.entity.Order">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into order (user_id, item_id, item_price, 
-      amount, order_price)
-    values (#{userId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{itemPrice,jdbcType=DECIMAL}, 
-      #{amount,jdbcType=INTEGER}, #{orderPrice,jdbcType=DECIMAL})
+    insert into `order` (id, user_id, item_id,
+      item_price, amount, order_price
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER},
+      #{itemPrice,jdbcType=DECIMAL}, #{amount,jdbcType=INTEGER}, #{orderPrice,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.Order">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into order
+    insert into `order`
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="userId != null">
         user_id,
       </if>
@@ -54,6 +53,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
