@@ -71,10 +71,14 @@ public class OrderServiceImpl implements OrderService {
         orderModel.setUserId(userId);
         orderModel.setItemPrice(itemModel.getPrice());
         orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
-        System.out.println(orderModel);
         Order order = converOrder(orderModel);
-        System.out.println(order);
         orderMapper.insertSelective(order);
+        // 这里应该考虑支付是否成功
+
+        // 增加销量
+        if ( itemService.increaseSales(itemId, amount) == false) {
+            throw new BusinessException(EmBusinessError.ORDER_ERROR, "增加销量失败");
+        }
         return orderModel;
     }
 
@@ -89,8 +93,10 @@ public class OrderServiceImpl implements OrderService {
         StringBuilder stringBuilder = new StringBuilder();
         // 订单号18位
         // 前8位是时间
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDateTime localDateTime = LocalDateTime.now();
-        stringBuilder.append(localDateTime.format(DateTimeFormatter.ISO_DATE));
+        stringBuilder.append(localDateTime.format(formatter));
         // 中间8位是自增序列
         sequenceInfo info = sequenceInfoMapper.getSequenceByName("order");
         int sequenceNumber = info.getCurrentValue();

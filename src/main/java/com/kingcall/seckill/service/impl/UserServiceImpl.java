@@ -39,13 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void register(UserModel userModel) throws BusinessException {
-        if (userModel == null) {
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
-        }
-
-        if (StringUtils.isEmpty(userModel.getName()) || userModel.getAge() == null || userModel.getGender() == null || StringUtils.isEmpty(userModel.getPhone())) {
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
-        }
+        userModel.setEncrptPassword(MD5Util.stringToMD5(userModel.getEncrptPassword()));
 
         User user = new User();
         BeanUtils.copyProperties(userModel, user);
@@ -62,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(String telephone, String password) throws BusinessException {
+    public UserModel login(String telephone, String password) throws BusinessException {
         // 通过用户手机获取用户信息
         User user = userMapper.selectByTelephone(telephone);
         if (user == null) {
@@ -72,6 +66,7 @@ public class UserServiceImpl implements UserService {
         if (!MD5Util.stringToMD5(password).equals(passwd.getEncrptPassword())) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "密码错误");
         }
+        return converUserModel(user, passwd);
     }
 
 

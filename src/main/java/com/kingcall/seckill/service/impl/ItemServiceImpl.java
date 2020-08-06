@@ -1,9 +1,9 @@
 package com.kingcall.seckill.service.impl;
 
 import com.kingcall.seckill.entity.Item;
-import com.kingcall.seckill.entity.ItemStock;
+import com.kingcall.seckill.entity.ItemStockSales;
 import com.kingcall.seckill.mapper.ItemMapper;
-import com.kingcall.seckill.mapper.ItemStockMapper;
+import com.kingcall.seckill.mapper.ItemStockSalesMapper;
 import com.kingcall.seckill.model.ItemModel;
 import com.kingcall.seckill.service.ItemService;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +21,7 @@ public class ItemServiceImpl implements ItemService {
     ItemMapper itemMapper;
 
     @Autowired
-    ItemStockMapper stockMapper;
+    ItemStockSalesMapper itemStockSalesMapper;
 
     @Override
     @Transactional
@@ -31,16 +31,16 @@ public class ItemServiceImpl implements ItemService {
         BeanUtils.copyProperties(itemModel, item);
         itemMapper.insertSelective(item);
 
-        ItemStock stock = new ItemStock();
+        ItemStockSales stock = new ItemStockSales();
         BeanUtils.copyProperties(itemModel, stock);
         stock.setItemId(item.getId());
-        stockMapper.insertSelective(stock);
+        itemStockSalesMapper.insertSelective(stock);
     }
 
     @Override
     public List<ItemModel> listItmes() {
         return itemMapper.listItem().stream().map(item -> {
-            ItemStock itemStock = stockMapper.selectByItemId(item.getId());
+            ItemStockSales itemStock = itemStockSalesMapper.selectByItemId(item.getId());
             return convertItemModel(item, itemStock);
         }).collect(Collectors.toList());
     }
@@ -51,14 +51,14 @@ public class ItemServiceImpl implements ItemService {
         if (item == null) {
             return null;
         }
-        ItemStock stock = stockMapper.selectByItemId(id);
+        ItemStockSales stock = itemStockSalesMapper.selectByItemId(id);
         return convertItemModel(item, stock);
     }
 
     @Override
     @Transactional
     public boolean decreaseStock(Integer itemId, Integer amount) {
-        int affectRow = stockMapper.decreaseStock(itemId, amount);
+        int affectRow = itemStockSalesMapper.decreaseStock(itemId, amount);
         if (affectRow > 0) {
             return true;
         } else {
@@ -66,7 +66,17 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    private ItemModel convertItemModel(Item item, ItemStock stock) {
+    @Override
+    public boolean increaseSales(Integer itemId, Integer amount) {
+        int affectRow = itemStockSalesMapper.increaseSales(itemId, amount);
+        if (affectRow > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private ItemModel convertItemModel(Item item, ItemStockSales stock) {
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(item, itemModel);
         itemModel.setStock(stock.getStock());

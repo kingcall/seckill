@@ -16,4 +16,5 @@ public interface ItemService {
      * @return
      */
     boolean decreaseStock(Integer itemId, Integer amount);
+    boolean increaseSales(Integer itemId, Integer amount);
 }

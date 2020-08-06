@@ -11,12 +11,13 @@ public enum EmBusinessError implements CommonError {
      * 2000开头的代表用户信息错误
      */
     USER_NOT_EXISTT(20001, "用户不存在"),
+    USER_NOT_LOGIN(20002, "用户未登录"),
 
     /**
      * 3000 开头代表交易错误
      */
     ITEM_NOT_EXIST_ERROR(30001,"商品不存在"),
-    ORDER_ERROR(30002,"交易错误")
+    ORDER_ERROR(30002,"交易错误"),
     ;
 
 

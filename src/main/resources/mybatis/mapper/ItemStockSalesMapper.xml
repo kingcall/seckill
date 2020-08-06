@@ -1,52 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kingcall.seckill.mapper.ItemStockMapper">
-  <resultMap id="BaseResultMap" type="com.kingcall.seckill.entity.ItemStock">
+<mapper namespace="com.kingcall.seckill.mapper.ItemStockSalesMapper">
+  <resultMap id="BaseResultMap" type="com.kingcall.seckill.entity.ItemStockSales">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="item_id" jdbcType="INTEGER" property="itemId" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="sales" jdbcType="INTEGER" property="sales" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, item_id, stock
+    id, item_id, stock, sales
   </sql>
-
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
-    from item_stock
+    from item_stock_sales
     where id = #{id,jdbcType=INTEGER}
   </select>
-
   <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from item_stock
+    from item_stock_sales
     where item_id = #{itemId,jdbcType=INTEGER}
   </select>
-
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from item_stock
+    delete from item_stock_sales
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kingcall.seckill.entity.ItemStock">
+  <insert id="insert" parameterType="com.kingcall.seckill.entity.ItemStockSales">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into item_stock (item_id, stock)
-    values (#{itemId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER})
+    insert into item_stock_sales (item_id, stock, sales
+      )
+    values (#{itemId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{sales,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.ItemStock">
+  <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.ItemStockSales">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into item_stock
+    insert into item_stock_sales
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="itemId != null">
         item_id,
       </if>
       <if test="stock != null">
         stock,
+      </if>
+      <if test="sales != null">
+        sales,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -56,10 +58,13 @@
       <if test="stock != null">
         #{stock,jdbcType=INTEGER},
       </if>
+      <if test="sales != null">
+        #{sales,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.ItemStock">
-    update item_stock
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.ItemStockSales">
+    update item_stock_sales
     <set>
       <if test="itemId != null">
         item_id = #{itemId,jdbcType=INTEGER},
@@ -67,24 +72,34 @@
       <if test="stock != null">
         stock = #{stock,jdbcType=INTEGER},
       </if>
+      <if test="sales != null">
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.ItemStock">
-    update item_stock
+  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.ItemStockSales">
+    update item_stock_sales
     set item_id = #{itemId,jdbcType=INTEGER},
-      stock = #{stock,jdbcType=INTEGER}
+      stock = #{stock,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
   <update id="decreaseStock">
-    update item_stock
+    update item_stock_sales
     set
-        stock = stock - #{amount}
+      stock = stock - #{amount}
     where
-        item_id = #{itemId}
-        and stock >= #{amount}
+      item_id = #{itemId}
+      and stock >= #{amount}
+  </update>
+
+  <update id="increaseSales">
+    update item_stock_sales
+    set
+      sales = sales + #{amount}
+    where
+      item_id = #{itemId}
   </update>
 
 </mapper>

@@ -9,5 +9,5 @@ public interface UserService {
 
     void register(UserModel userModel) throws BusinessException;
 
-    void login(String telephone, String password) throws BusinessException;
+    UserModel login(String telephone, String password) throws BusinessException;
 }

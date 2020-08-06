@@ -5,6 +5,7 @@ import com.kingcall.seckill.common.Constant;
 import com.kingcall.seckill.common.error.BusinessException;
 import com.kingcall.seckill.common.error.EmBusinessError;
 import com.kingcall.seckill.common.response.CommonReturnType;
+import com.kingcall.seckill.entity.User;
 import com.kingcall.seckill.service.UserService;
 import com.kingcall.seckill.model.UserModel;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ public class UserController {
 
     /**
      * 获取opt 短信接口
+     *
      * @param telephone
      * @return
      */
@@ -50,7 +52,7 @@ public class UserController {
         String optCode = String.valueOf(result);
         // 将验证码和用户手机号关联(可以采用redis)
         httpServlet.getSession().setAttribute(telephone, optCode);
-        log.info("====================== telephone:{} optCode:{} ==================",telephone,optCode);
+        log.info("====================== telephone:{} optCode:{} ==================", telephone, optCode);
         // 发送验证码给用户
         return CommonReturnType.create(optCode);
     }
@@ -60,12 +62,12 @@ public class UserController {
      * @param optCode   发送到用户手机上的optCode
      * @return
      */
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public CommonReturnType register(@Valid UserModel userModel,String optCode) throws BusinessException {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public CommonReturnType register(@Valid UserModel userModel, String optCode) throws BusinessException {
         // 验收手机号和optcode 是否对应
         String inSessionOptcode = (String) httpServlet.getSession().getAttribute(userModel.getPhone());
         if (!StringUtils.equals(optCode, inSessionOptcode)) {
-            log.debug(optCode+"==========="+inSessionOptcode);
+            log.debug(optCode + "===========" + inSessionOptcode);
             //throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"验证码错误");
         } else {
             // 处理用户注册请求
@@ -77,17 +79,29 @@ public class UserController {
     }
 
 
-
     @RequestMapping("/login")
-    public CommonReturnType login(@RequestParam(name = "telephone") String telephone,@RequestParam(name = "telephone") String passwd) throws BusinessException {
+    public CommonReturnType login(@RequestParam(name = "telephone") String telephone, @RequestParam(name = "passwd") String passwd) throws BusinessException {
         // 入参数校验
-        if (StringUtils.isEmpty(telephone)|| StringUtils.isEmpty(passwd)){
-            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"参数不能为空");
+        if (StringUtils.isEmpty(telephone) || StringUtils.isEmpty(passwd)) {
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "参数不能为空");
         }
-        userService.login(telephone, passwd);
+        UserModel userModel = userService.login(telephone, passwd);
         // 将用户信息加入到登陆成功的session 内
         httpServlet.getSession().setAttribute(Constant.IS_LOGIN, true);
+        httpServlet.getSession().setAttribute(Constant.LOGIN_USER, userModel);
         return CommonReturnType.create("登陆成功");
     }
+
+
+    @RequestMapping("/getLogin")
+    public CommonReturnType getLoginUser() throws BusinessException {
+
+        System.out.println( httpServlet.getSession().getAttribute(Constant.IS_LOGIN));;
+        System.out.println(httpServlet.getSession().getAttribute(Constant.LOGIN_USER));;
+        return CommonReturnType.create(httpServlet.getSession().getAttribute(Constant.LOGIN_USER));
+    }
+
+
+
 
 }

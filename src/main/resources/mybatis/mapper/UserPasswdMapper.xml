@@ -22,7 +22,7 @@
     select
     <include refid="Base_Column_List" />
     from user_password
-    where id = #{id,jdbcType=INTEGER}
+    where user_id = #{id,jdbcType=INTEGER}
   </select>
 
 
