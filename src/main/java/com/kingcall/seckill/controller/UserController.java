@@ -8,8 +8,10 @@ import com.kingcall.seckill.common.response.CommonReturnType;
 import com.kingcall.seckill.entity.User;
 import com.kingcall.seckill.service.UserService;
 import com.kingcall.seckill.model.UserModel;
+import com.kingcall.seckill.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +32,12 @@ public class UserController {
     @RequestMapping("/get")
     public CommonReturnType getUserById(int id) throws BusinessException {
         UserModel user = userService.getUserById(id);
-        if (id == 3) {
-            throw new NullPointerException();
-        }
         if (user == null) {
             throw new BusinessException(EmBusinessError.USER_NOT_EXISTT);
         }
-        return CommonReturnType.create(user);
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(user, userVo);
+        return CommonReturnType.create(userVo);
     }
 
     /**

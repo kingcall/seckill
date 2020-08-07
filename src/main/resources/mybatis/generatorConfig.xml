@@ -101,14 +101,14 @@
 <!--               selectByExampleQueryId="false">-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>-->
 <!--        </table>-->
-        <table tableName="item_stock_sales" domainObjectName="ItemStockSales"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
-        </table>
+<!--        <table tableName="item_stock_sales" domainObjectName="ItemStockSales"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>-->
+<!--        </table>-->
 
 
 <!--        <table tableName="order" domainObjectName="Order"-->
@@ -129,6 +129,15 @@
 <!--               selectByExampleQueryId="false">-->
 <!--            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>-->
 <!--        </table>-->
+
+        <table tableName="promo_action" domainObjectName="PromoAction"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
+        </table>
 
     </context>
 </generatorConfiguration>

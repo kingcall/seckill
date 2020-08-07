@@ -34,4 +34,9 @@ public class ItemModel {
 
     @NotNull(message = "图片信息不能为空")
     private String imgurl;
+
+    /**
+     * 使用聚合模型，将商品正在进行和还未开始的活动聚合进来
+     */
+    PromoModel promoModel;
 }

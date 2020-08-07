@@ -5,7 +5,9 @@ import com.kingcall.seckill.entity.ItemStockSales;
 import com.kingcall.seckill.mapper.ItemMapper;
 import com.kingcall.seckill.mapper.ItemStockSalesMapper;
 import com.kingcall.seckill.model.ItemModel;
+import com.kingcall.seckill.model.PromoModel;
 import com.kingcall.seckill.service.ItemService;
+import com.kingcall.seckill.service.PromoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemStockSalesMapper itemStockSalesMapper;
+
+    @Autowired
+    PromoService promoService;
 
     @Override
     @Transactional
@@ -47,12 +52,21 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemModel getItem(int id) {
+        //获取商品主信息
         Item item = itemMapper.selectByPrimaryKey(id);
         if (item == null) {
             return null;
         }
+        // 获取商品库存信息
         ItemStockSales stock = itemStockSalesMapper.selectByItemId(id);
-        return convertItemModel(item, stock);
+        ItemModel itemModel = convertItemModel(item, stock);
+        // 获取商品活动信息
+        PromoModel promoModel = promoService.getPromo(id);
+        if (promoModel != null && promoModel.getStatus() != 3) {
+            itemModel.setPromoModel(promoModel);
+        }
+
+        return itemModel;
     }
 
     @Override
