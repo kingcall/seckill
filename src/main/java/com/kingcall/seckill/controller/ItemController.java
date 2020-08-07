@@ -9,10 +9,7 @@ import com.kingcall.seckill.service.ItemService;
 import com.kingcall.seckill.vo.ItemVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,8 +21,8 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonReturnType create(@Valid ItemModel itemModel) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public CommonReturnType create(@Valid @RequestBody  ItemModel itemModel) {
         Item item = new Item();
         itemService.createItem(itemModel);
         return CommonReturnType.create("上架成功");
