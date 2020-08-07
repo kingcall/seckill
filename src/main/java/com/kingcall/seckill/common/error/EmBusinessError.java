@@ -19,7 +19,11 @@ public enum EmBusinessError implements CommonError {
     ITEM_NOT_EXIST_ERROR(30001,"商品不存在"),
     ORDER_ERROR(30002,"交易错误"),
 
+    /**
+     * 4000 开头代表活动粗错误信息
+     */
 
+    PROMO_ACTION_ERROR(40002,"活动信息错误"),
 
     ;
 

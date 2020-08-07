@@ -9,11 +9,13 @@ public interface PromoService {
      * @param itemId
      * @return
      */
-    PromoModel getPromo(int itemId);
+    PromoModel getPromoByItemId(int itemId);
 
     /**
      * 创建秒杀活动
      * @return
      */
     Boolean createPromo(PromoModel promoModel) throws BusinessException;
+
+
 }

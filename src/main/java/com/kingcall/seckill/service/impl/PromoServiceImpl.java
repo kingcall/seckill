@@ -13,6 +13,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class PromoServiceImpl implements PromoService {
     @Autowired
@@ -22,25 +24,45 @@ public class PromoServiceImpl implements PromoService {
     ItemService itemService;
 
     @Override
-    public PromoModel getPromo(int itemId) {
+    public PromoModel getPromoByItemId(int itemId) {
         PromoAction promoAction = promoActionMapper.selectByItemId(itemId);
         return convertPromoModel(promoAction);
     }
 
     @Override
     public Boolean createPromo(PromoModel promoModel) throws BusinessException {
+
         //商品是否存在
         ItemModel itemModel = itemService.getItem(promoModel.getItemId());
         if (itemModel == null) {
             throw new BusinessException(EmBusinessError.ITEM_NOT_EXIST_ERROR);
         }
-        // 时间先后关系判断
-        PromoAction promoAction = new PromoAction();
-        BeanUtils.copyProperties(promoModel, promoAction);
+
+        if (itemModel.getPrice().compareTo(promoModel.getPromoPrice()) == -1) {
+            throw new BusinessException(EmBusinessError.PROMO_ACTION_ERROR, "活动价格不能大于原来价格");
+        }
+
+        if (itemModel.getPromoModel() != null) {
+            throw new BusinessException(EmBusinessError.PROMO_ACTION_ERROR, "商品已经存在活动");
+        }
+
+
+        PromoAction promoAction = convertPromoAction(promoModel);
         promoActionMapper.insertSelective(promoAction);
-        return null;
+        return true;
     }
 
+
+    private PromoAction convertPromoAction(PromoModel promoModel) {
+        PromoAction promoAction = new PromoAction();
+        if (promoModel == null) {
+            return null;
+        }
+        BeanUtils.copyProperties(promoModel, promoAction);
+        promoAction.setEndTime(promoModel.getEndTime().toDate());
+        promoAction.setStartTime(promoModel.getStartTime().toDate());
+        return promoAction;
+    }
 
     private PromoModel convertPromoModel(PromoAction promoAction) {
         PromoModel promoModel = new PromoModel();
@@ -48,8 +70,8 @@ public class PromoServiceImpl implements PromoService {
             return null;
         }
         BeanUtils.copyProperties(promoAction, promoModel);
-        promoModel.setEndTime(new DateTime(promoAction.getStartTime()));
-        promoModel.setStartTime(new DateTime(promoAction.getEndTime()));
+        promoModel.setEndTime(new DateTime(promoAction.getEndTime()));
+        promoModel.setStartTime(new DateTime(promoAction.getStartTime()));
         modelStatusProcess(promoModel);
         return promoModel;
     }
@@ -58,7 +80,7 @@ public class PromoServiceImpl implements PromoService {
         if (model == null) {
             return;
         }
-        if (model.getStartTime().isAfterNow()) {
+        if (model.getStartTime().isBeforeNow()) {
             model.setStatus(1);
         } else if (model.getEndTime().isBeforeNow()) {
             model.setStatus(3);

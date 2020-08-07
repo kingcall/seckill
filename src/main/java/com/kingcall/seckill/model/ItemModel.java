@@ -24,7 +24,7 @@ public class ItemModel {
     private String description;
 
     @NotNull
-    @Min(value = 0, message = "商品价格必须大于0")
+    @Min(value = 0, message = "商品价格不能小于0")
     private BigDecimal price;
 
     /**

@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 整合商品的信息和活动的信息
@@ -24,7 +25,7 @@ public class ItemVo {
     /**
      * 秒杀活动的信息
      */
-    private Long promoPrice;
+    private BigDecimal promoPrice;
     /**
      *秒杀活动的状态 0 没有秒杀活动  1 没有开始  2进行中
      */

@@ -1,6 +1,7 @@
 package com.kingcall.seckill.model;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -29,5 +30,6 @@ public class UserModel {
     private String thirdPartyId;
 
     @NotBlank(message = "密码不能为空")
+    @Length(min = 6,message = "密码长度不能小于6")
     private String encrptPassword;
 }

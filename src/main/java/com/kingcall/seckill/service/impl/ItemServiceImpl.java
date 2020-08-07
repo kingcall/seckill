@@ -60,8 +60,9 @@ public class ItemServiceImpl implements ItemService {
         // 获取商品库存信息
         ItemStockSales stock = itemStockSalesMapper.selectByItemId(id);
         ItemModel itemModel = convertItemModel(item, stock);
+
         // 获取商品活动信息
-        PromoModel promoModel = promoService.getPromo(id);
+        PromoModel promoModel = promoService.getPromoByItemId(id);
         if (promoModel != null && promoModel.getStatus() != 3) {
             itemModel.setPromoModel(promoModel);
         }

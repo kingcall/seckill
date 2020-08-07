@@ -1,5 +1,6 @@
 package com.kingcall.seckill.controller;
 
+import com.kingcall.seckill.common.error.BusinessException;
 import com.kingcall.seckill.common.response.CommonReturnType;
 import com.kingcall.seckill.model.PromoModel;
 import com.kingcall.seckill.service.PromoService;
@@ -17,7 +18,7 @@ public class PromoController {
     PromoService promoService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    CommonReturnType createPromo(@Valid PromoModel promoModel) {
+    CommonReturnType createPromo(@Valid PromoModel promoModel) throws BusinessException {
         promoService.createPromo(promoModel);
         return CommonReturnType.create("创建活动成功");
     }
