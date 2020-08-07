@@ -1,6 +1,6 @@
 package com.kingcall.seckill.entity;
 
-public class sequenceInfo {
+public class SequenceInfo {
     private String tableName;
 
     private Integer currentValue;

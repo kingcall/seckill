@@ -3,7 +3,7 @@ package com.kingcall.seckill.service.impl;
 import com.kingcall.seckill.common.error.BusinessException;
 import com.kingcall.seckill.common.error.EmBusinessError;
 import com.kingcall.seckill.entity.Order;
-import com.kingcall.seckill.entity.sequenceInfo;
+import com.kingcall.seckill.entity.SequenceInfo;
 import com.kingcall.seckill.mapper.OrderMapper;
 import com.kingcall.seckill.mapper.SequenceInfoMapper;
 import com.kingcall.seckill.model.ItemModel;
@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime localDateTime = LocalDateTime.now();
         stringBuilder.append(localDateTime.format(formatter));
         // 中间8位是自增序列
-        sequenceInfo info = sequenceInfoMapper.getSequenceByName("order");
+        SequenceInfo info = sequenceInfoMapper.getSequenceByName("order");
         int sequenceNumber = info.getCurrentValue();
         info.setCurrentValue(sequenceNumber + info.getStep());
         sequenceInfoMapper.updateByPrimaryKeySelective(info);

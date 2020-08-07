@@ -1,19 +1,19 @@
 package com.kingcall.seckill.mapper;
 
-import com.kingcall.seckill.entity.sequenceInfo;
+import com.kingcall.seckill.entity.SequenceInfo;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SequenceInfoMapper {
     int deleteByPrimaryKey(String tableName);
 
-    int insert(sequenceInfo record);
+    int insert(SequenceInfo record);
 
-    int insertSelective(sequenceInfo record);
+    int insertSelective(SequenceInfo record);
 
-    sequenceInfo getSequenceByName(String tableName);
+    SequenceInfo getSequenceByName(String tableName);
 
-    int updateByPrimaryKeySelective(sequenceInfo record);
+    int updateByPrimaryKeySelective(SequenceInfo record);
 
-    int updateByPrimaryKey(sequenceInfo record);
+    int updateByPrimaryKey(SequenceInfo record);
 }

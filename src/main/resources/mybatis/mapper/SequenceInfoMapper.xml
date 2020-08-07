@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kingcall.seckill.mapper.SequenceInfoMapper">
-  <resultMap id="BaseResultMap" type="com.kingcall.seckill.entity.sequenceInfo">
+  <resultMap id="BaseResultMap" type="com.kingcall.seckill.entity.SequenceInfo">
     <id column="table_name" jdbcType="VARCHAR" property="tableName" />
     <result column="current_value" jdbcType="INTEGER" property="currentValue" />
     <result column="step" jdbcType="INTEGER" property="step" />
@@ -21,13 +21,13 @@
     delete from sequence_info
     where table_name = #{tableName,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.kingcall.seckill.entity.sequenceInfo">
+  <insert id="insert" parameterType="com.kingcall.seckill.entity.SequenceInfo">
     insert into sequence_info (table_name, current_value, step
       )
     values (#{tableName,jdbcType=VARCHAR}, #{currentValue,jdbcType=INTEGER}, #{step,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.sequenceInfo">
+  <insert id="insertSelective" parameterType="com.kingcall.seckill.entity.SequenceInfo">
     insert into sequence_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="tableName != null">
@@ -52,7 +52,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.sequenceInfo">
+  <update id="updateByPrimaryKeySelective" parameterType="com.kingcall.seckill.entity.SequenceInfo">
     update sequence_info
     <set>
       <if test="currentValue != null">
@@ -64,7 +64,7 @@
     </set>
     where table_name = #{tableName,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.sequenceInfo">
+  <update id="updateByPrimaryKey" parameterType="com.kingcall.seckill.entity.SequenceInfo">
     update sequence_info
     set current_value = #{currentValue,jdbcType=INTEGER},
       step = #{step,jdbcType=INTEGER}
