@@ -17,5 +17,12 @@ public interface PromoService {
      */
     Boolean createPromo(PromoModel promoModel) throws BusinessException;
 
+    /**
+     * 根据活动ID 获取活动西悉尼
+     * @param promoId
+     * @return
+     */
+    PromoModel getPromoByPrimaryKey(int promoId);
+
 
 }

@@ -30,6 +30,14 @@ public class PromoServiceImpl implements PromoService {
     }
 
     @Override
+    public PromoModel getPromoByPrimaryKey(int promoId) {
+        PromoAction promoAction = promoActionMapper.selectByPrimaryKey(promoId);
+        return convertPromoModel(promoAction);
+    }
+
+
+
+    @Override
     public Boolean createPromo(PromoModel promoModel) throws BusinessException {
 
         //商品是否存在
@@ -80,7 +88,7 @@ public class PromoServiceImpl implements PromoService {
         if (model == null) {
             return;
         }
-        if (model.getStartTime().isBeforeNow()) {
+        if (model.getStartTime().isAfterNow()) {
             model.setStatus(1);
         } else if (model.getEndTime().isBeforeNow()) {
             model.setStatus(3);

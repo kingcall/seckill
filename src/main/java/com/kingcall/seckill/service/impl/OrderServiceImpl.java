@@ -8,10 +8,13 @@ import com.kingcall.seckill.mapper.OrderMapper;
 import com.kingcall.seckill.mapper.SequenceInfoMapper;
 import com.kingcall.seckill.model.ItemModel;
 import com.kingcall.seckill.model.OrderModel;
+import com.kingcall.seckill.model.PromoModel;
 import com.kingcall.seckill.model.UserModel;
 import com.kingcall.seckill.service.ItemService;
 import com.kingcall.seckill.service.OrderService;
+import com.kingcall.seckill.service.PromoService;
 import com.kingcall.seckill.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private ItemService itemService;
@@ -38,10 +42,23 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private SequenceInfoMapper sequenceInfoMapper;
 
+    @Autowired
+    PromoService promoService;
+
+
+    /**
+     * 秒杀活动
+     *
+     * @param userId
+     * @param itemId
+     * @param amount
+     * @param promoId
+     * @return
+     * @throws BusinessException
+     */
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws BusinessException {
-
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer amount, Integer promoId) throws BusinessException {
         // 参数校验
         if (userId == null || itemId == null || amount <= 0) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "参数不合法");
@@ -63,26 +80,44 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessException(EmBusinessError.ORDER_ERROR, "库存不足");
         }
 
+
         // 订单入库
         OrderModel orderModel = new OrderModel();
         orderModel.setId(generateOrderId(userId));
         orderModel.setItemId(itemId);
         orderModel.setAmount(amount);
         orderModel.setUserId(userId);
-        orderModel.setItemPrice(itemModel.getPrice());
-        orderModel.setOrderPrice(itemModel.getPrice().multiply(new BigDecimal(amount)));
-        Order order = converOrder(orderModel);
+
+        /**
+         * 是秒杀活动
+         */
+        PromoModel promoModel = null;
+        if (promoId != null) {
+            // 活动信息校验 是否存在活动 活动和商品是否匹配  活动是否在进行中
+            promoModel = promoService.getPromoByPrimaryKey(promoId);
+            if (promoModel == null || promoModel.getItemId() != itemId || promoModel.getStatus() != 2) {
+                log.warn(promoModel.toString());
+                throw new BusinessException(EmBusinessError.PROMO_ACTION_ERROR);
+            }
+            orderModel.setItemPrice(promoModel.getPromoPrice());
+            orderModel.setPromoId(promoId);
+        } else {
+            orderModel.setItemPrice(itemModel.getPrice());
+        }
+
+        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(amount)));
+        Order order = convertOrder(orderModel);
         orderMapper.insertSelective(order);
         // 这里应该考虑支付是否成功
 
         // 增加销量
-        if ( itemService.increaseSales(itemId, amount) == false) {
+        if (itemService.increaseSales(itemId, amount) == false) {
             throw new BusinessException(EmBusinessError.ORDER_ERROR, "增加销量失败");
         }
         return orderModel;
     }
 
-    private Order converOrder(OrderModel orderModel) {
+    private Order convertOrder(OrderModel orderModel) {
         Order order = new Order();
         BeanUtils.copyProperties(orderModel, order);
         return order;
@@ -111,4 +146,6 @@ public class OrderServiceImpl implements OrderService {
         stringBuilder.append(String.valueOf(userId % 100));
         return stringBuilder.toString();
     }
+
+
 }

@@ -47,6 +47,7 @@ public class ItemController {
             itemVo.setStartTime((itemModel.getPromoModel().getStartTime()));
             itemVo.setEndTime((itemModel.getPromoModel().getEndTime()));
             itemVo.setPromoPrice((itemModel.getPromoModel().getPromoPrice()));
+            itemVo.setPromoName(itemModel.getPromoModel().getPromoName());
         } else {
             itemVo.setProStatus(0);
         }

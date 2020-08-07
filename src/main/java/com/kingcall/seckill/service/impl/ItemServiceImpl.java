@@ -82,6 +82,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public boolean increaseSales(Integer itemId, Integer amount) {
         int affectRow = itemStockSalesMapper.increaseSales(itemId, amount);
         if (affectRow > 0) {

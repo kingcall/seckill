@@ -6,10 +6,10 @@ import com.kingcall.seckill.model.OrderModel;
 public interface OrderService {
     /**
      *
-     * @param userId
-     * @param itemId
+     * @param userId  下单用户
+     * @param itemId  下单商品
      * @param amount 下单的个数
      * @return
      */
-    OrderModel createOrder(Integer userId, Integer itemId, Integer amount) throws BusinessException;
+    OrderModel createOrder(Integer userId, Integer itemId, Integer amount,Integer promoId) throws BusinessException;
 }

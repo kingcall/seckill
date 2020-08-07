@@ -30,4 +30,9 @@ public class OrderModel {
      */
     private BigDecimal itemPrice;
 
+    /**
+     * 表示订单是参与的秒杀活动
+     */
+    private Integer promoId;
+
 }

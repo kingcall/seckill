@@ -18,5 +18,7 @@ public class Order {
 
     private BigDecimal orderPrice;
 
+    private Integer promoId;
+
 
 }
